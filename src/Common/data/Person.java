@@ -1,8 +1,5 @@
 package Common.data;
 
-import Common.data.Color;
-import Common.data.Country;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,14 +8,14 @@ import java.util.Objects;
  */
 public class Person  implements Serializable {
     private double weight;
-    private Color eyecolor;
-    private Color haircolor;
+    private Colors eyecolor;
+    private Colors haircolor;
     private Country nationality;
 
     public Person(){
     }
 
-    public Person(double weight, Color eyecolor, Color haircolor, Country nationality){
+    public Person(double weight, Colors eyecolor, Colors haircolor, Country nationality){
         this.weight=weight;
         this.eyecolor=eyecolor;
         this.haircolor=haircolor;
@@ -35,14 +32,14 @@ public class Person  implements Serializable {
     /**
      * @return цвета глаз человека
      */
-   public Color getEyecolor(){
+   public Colors getEyecolor(){
         return eyecolor;
    }
 
     /**
      * @return цвета волос человека
      */
-   public Color getHaircolor(){
+   public Colors getHaircolor(){
         return haircolor;
    }
 
@@ -57,11 +54,11 @@ public class Person  implements Serializable {
        this.weight=weight;
    }
 
-   public void setEyecolor(Color eyecolor){
+   public void setEyecolor(Colors eyecolor){
        this.eyecolor=eyecolor;
    }
 
-   public void setHaircolor(Color haircolor){
+   public void setHaircolor(Colors haircolor){
        this.haircolor=haircolor;
    }
 

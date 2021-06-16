@@ -1,13 +1,10 @@
 package Client.util;
 
 
-import Client.Client;
 import Common.data.*;
 import Common.exceptions.IncorrectVariableException;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
@@ -54,7 +51,7 @@ public class Creator {
         int x;
         while(true){
             try {
-                System.out.println("Введите координату x:");   //добавить исключения + ограничения из условия задания
+                System.out.println("Введите координату x:");
                 x = Integer.parseInt(scanner.nextLine().trim());
                 break;
             }catch (NumberFormatException exception){
@@ -64,7 +61,7 @@ public class Creator {
 
         while(true){
             try {
-                System.out.println("Введите координату y:");     //добавить исключения + ограничения из условия задания
+                System.out.println("Введите координату y:");
                 y = Double.parseDouble(scanner.nextLine().trim());
                 if (y < minY) throw new IncorrectVariableException();
                 break;
@@ -87,7 +84,9 @@ public class Creator {
             try{
                 System.out.println("Введите профессию");
                 System.out.println("Список профессий" + "\n" + Position.lookPosition());
-                currentPosition=Position.valueOf(scanner.nextLine().trim().toUpperCase());
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentPosition=Position.valueOf(str.toUpperCase());
                 break;
             }catch (IllegalArgumentException exception){ //переделать исключения
                 System.err.println("Такой професси нет в предложенном списке");
@@ -100,13 +99,15 @@ public class Creator {
      * Получает цвет глаз работника
      * @return цвет
      */
-    public Color inputEyeColor(){
-        Color currentEyeColor;
+    public Colors inputEyeColor(){
+        Colors currentEyeColor;
         while(true){
             try{
                 System.out.println("Введите цвет глаз");
-                System.out.println("Список цветов" + "\n" +Color.lookColor() );
-                currentEyeColor=Color.valueOf(scanner.nextLine().trim().toUpperCase());
+                System.out.println("Список цветов" + "\n" + Colors.lookColor() );
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentEyeColor= Colors.valueOf(str.toUpperCase());
                 break;
             } catch (IllegalArgumentException exception){ //переделать исключения
                 System.err.println("Такого цвета глаз нет в предложенном списке");
@@ -119,13 +120,15 @@ public class Creator {
      * Получает цвет волос работника
      * @return цвет
      */
-    public Color inputHairColor(){
-        Color currentHairColor;
+    public Colors inputHairColor(){
+        Colors currentHairColor;
         while(true){
             try{
                 System.out.println("Введите цвет волос");
-                System.out.println("Список цветов "+ "\n" + Color.lookColor());
-                currentHairColor=Color.valueOf(scanner.nextLine().trim().toUpperCase());
+                System.out.println("Список цветов "+ "\n" + Colors.lookColor());
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentHairColor= Colors.valueOf(str.toUpperCase());
                 break;
             } catch (IllegalArgumentException exception){ //исключения
                 System.err.println("Такого цвета волос нет в предложенном списке");
@@ -144,7 +147,9 @@ public class Creator {
             try{
                 System.out.println("Введите страну");
                 System.out.println("Список стран" + "\n" + Country.lookCountry());
-                currentNationality=Country.valueOf(scanner.nextLine().trim().toUpperCase());
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentNationality=Country.valueOf(str.toUpperCase());
                 break;
             } catch (IllegalArgumentException exception){ //исключения
                 System.err.println("Такой страны нет в предложенном списке ");
@@ -157,12 +162,14 @@ public class Creator {
      * Получает вес работника
      * @return вес
      */
-    public double inputWeight(){
-        double currentWeight;
+    public Double inputWeight(){
+        Double currentWeight;
         while(true) {
             try {
                 System.out.println("Введите вес");
-                currentWeight = Double.parseDouble(scanner.nextLine().trim()); //добавить исключения
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentWeight = Double.parseDouble(str); //добавить исключения
                 if (currentWeight <= minWeight) throw new IncorrectVariableException();
                 break;
             } catch (IncorrectVariableException exception) {
@@ -183,7 +190,10 @@ public class Creator {
         while(true){
             try {
                 System.out.println("Введите зарплату");
-                currentSalary = Long.parseLong(scanner.nextLine().trim()); //добавить исключения
+                String str=scanner.nextLine().trim();
+                if(str.isEmpty()) return null;
+                currentSalary = Long.parseLong(str); //добавить исключения
+
                 if (currentSalary <= minSalary) throw new IncorrectVariableException();
                 break;
             }catch (IncorrectVariableException exception){
@@ -218,12 +228,12 @@ public class Creator {
      * Получает дату окончания работы работника
      * @return дата
      */
-    public ZonedDateTime inputEndDate() {
-        ZonedDateTime currentEndDate;
+    public LocalDateTime inputEndDate() {
+        LocalDateTime currentEndDate;
         while (true) {
             try{
                 System.out.println("Введите дату окончания работы");
-                currentEndDate = ZonedDateTime.parse(scanner.nextLine().trim()+ "T00:00:00.000090Z[Etc/UTC]"); //подумать над исключениями
+                currentEndDate = LocalDateTime.parse(scanner.nextLine().trim()+ "T00:00:00"); //подумать над исключениями
                 break;
 
             }catch (DateTimeParseException exception){

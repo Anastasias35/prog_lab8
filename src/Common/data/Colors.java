@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Перечисление цветов глаз и волос
  */
-public enum Color implements Serializable {
+public enum Colors implements Serializable {
     GREEN,
     BLUE,
     YELLOW,
@@ -16,7 +16,7 @@ public enum Color implements Serializable {
      */
     public static String lookColor(){
         String colorList="";
-        for(Color color:values()){
+        for(Colors color:values()){
             colorList += color.name() + "\n";
         }
         System.out.println("Выберите один из предложенных вариантов");

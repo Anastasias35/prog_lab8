@@ -22,5 +22,6 @@ public enum Position implements Serializable {
         System.out.println("Выберите один из предложенных вариантов" );
         return positionList;
     }
+
 }
 

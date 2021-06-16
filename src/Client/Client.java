@@ -1,16 +1,18 @@
 package Client;
 
+import Client.util.Entrance;
 import Client.util.NewConsole;
+import Client.util.User;
 import Common.Request;
 import Common.exceptions.ConnectionErrorException;
 import Common.Response;
 import Common.ResponseType;
 
 import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.NoSuchElementException;
 
 public class Client {
     private String host;
@@ -20,87 +22,47 @@ public class Client {
     private boolean connection;
     private boolean run;
     private final int maxconnect=5;
-    private SocketChannel socketChannel;
-  //  private ObjectOutputStream objectOutputStream;
+    private DatagramSocket socket;
+    private SocketAddress address;
+    private Entrance entrance;
+    private User user;
+    private ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream;
 
 
 
-    public Client(String host, int port, NewConsole console){
+    public Client(String host, int port, NewConsole console, Entrance entrance){
         this.host=host;
         this.port=port;
         this.console=console;
+        this.entrance=entrance;
     }
 
 
-    public void connect() throws ConnectionErrorException{
-        connection=false;
-        do{
-            try{
-                if (reconnecting>0) System.out.println("Переподключение...");
-                socketChannel=SocketChannel.open(new InetSocketAddress(host,port));
-                System.out.println("Подключение с сервером установлено");
-                connection=true;
-                reconnecting=0;
-            } catch (UnknownHostException e) {
-                System.out.println("Неизвестное имя хоста");
-            } catch (IOException e) {
-                System.out.println("Произошла ошибка при попытке подключения с сервером");
-                throw new ConnectionErrorException();
-            }
-        }while(!connection);
-    }
-
-    //доработать
-    public void work() {
-        run=true;
-         while(run){
-            try {
-                connect();
-                run = sendToServer();
-            } catch (ConnectionErrorException e) {
-                if(reconnecting>=maxconnect){
-                    System.out.println("Превышено максимальное количество попыток подключения");
-                    System.exit(0);
-                }
-            }
-            reconnecting++;
-
+    public void connect() {
+        try{
+            address=new InetSocketAddress(this.host,this.port);
+            socket=new DatagramSocket();
+            System.out.println("Подключение с сервером установлено");
+        } catch (IOException e) {
+            System.out.println("Произошла ошибка при попытке подключения с сервером");
+            System.exit(0);
         }
-         System.out.println("Завершение работы");
-         System.exit(0);
+
     }
 
+    public void sendToServer(Request request) throws IOException{
+        user=request.getUser();
+        byte[] sendBuffer = serialization(request);
+        DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, address);
+        socket.send(sendPacket);
+    }
 
-    //отправка запроса на сервер и получение ответа
-    public boolean sendToServer() throws ConnectionErrorException {
-        ByteBuffer byteBuffer=ByteBuffer.allocate(65536);
-        Request requestToServer = null;
-        Response responseFromServer = null;
-        do {
-            try {
-                requestToServer= console.actMode();
-                if (!requestToServer.isEmpty()) {
-                    byteBuffer.clear();
-                    byteBuffer.put(serialization(requestToServer));
-                    byteBuffer.flip();
-                    socketChannel.write(byteBuffer);
-                    byteBuffer.clear();
-                    socketChannel.read(byteBuffer);
-                    responseFromServer = deserialization(byteBuffer.array());
-                    System.out.println(responseFromServer.getInf());
-                }
-
-            }catch (ClassNotFoundException e) {
-                System.out.println("Призошла ошибка при чтении данных");
-            }catch(ClassCastException exception){
-                System.out.println("Соединение с сервером прервано");
-                reconnecting++;
-                connect();
-                throw new ConnectionErrorException();
-            } catch (IOException e) {
-            }
-        } while (!responseFromServer.getResponseType().equals(ResponseType.EXIT));
-        return  false;
+    public Response recieveFromServer() throws IOException, ClassNotFoundException {
+        byte[] getBuffer = new byte[socket.getReceiveBufferSize()];
+        DatagramPacket getPacket = new DatagramPacket(getBuffer, getBuffer.length);
+        socket.receive(getPacket);
+        return deserialization(getPacket);
     }
 
 
@@ -117,9 +79,9 @@ public class Client {
     }
 
 
-    public Response deserialization(byte[] byteResponse) throws IOException, ClassNotFoundException,ClassCastException {
+    public Response deserialization(DatagramPacket byteResponse) throws IOException, ClassNotFoundException,ClassCastException {
         Response response=null;
-        ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(byteResponse);
+        ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(byteResponse.getData());
         ObjectInputStream objectInputStream=new ObjectInputStream(byteArrayInputStream);
         response=(Response)objectInputStream.readObject();
         byteArrayInputStream.close();
@@ -127,4 +89,8 @@ public class Client {
         return response;
     }
 
+
+    public User getUser(){
+        return user;
+    }
 }

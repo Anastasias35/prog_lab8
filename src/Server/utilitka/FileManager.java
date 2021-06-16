@@ -4,11 +4,9 @@ import Common.data.*;
 
 import Common.exceptions.IncorrectVariableException;
 
-import javax.swing.text.Style;
 import java.io.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 
@@ -89,7 +87,7 @@ public class FileManager {
                              worker.setStartDate(LocalDateTime.parse(reader[5]));
                              break;
                          case 6:
-                             worker.setEndDate(ZonedDateTime.parse(reader[6]));
+                             worker.setEndDate(LocalDateTime.parse(reader[6]));
                              break;
                          case 7:
                              reader[7]=reader[7].toUpperCase();
@@ -116,32 +114,32 @@ public class FileManager {
                              person.setWeight(Double.parseDouble(person1[0]));
                              switch (person1[1].toUpperCase()){
                                  case "GREEN":
-                                     person.setEyecolor(Color.GREEN);
+                                     person.setEyecolor(Colors.GREEN);
                                      break;
                                  case "BLUE":
-                                     person.setEyecolor(Color.BLUE);
+                                     person.setEyecolor(Colors.BLUE);
                                      break;
                                  case "ORANGE":
-                                     person.setEyecolor(Color.ORANGE);
+                                     person.setEyecolor(Colors.ORANGE);
                                      break;
                                  case "YELLOW":
-                                     person.setEyecolor(Color.YELLOW);
+                                     person.setEyecolor(Colors.YELLOW);
                                      break;
                                  default:
                                      throw new IncorrectVariableException();
                              }
                              switch (person1[2].toUpperCase()){
                                  case "GREEN":
-                                     person.setHaircolor(Color.GREEN);
+                                     person.setHaircolor(Colors.GREEN);
                                      break;
                                  case "BLUE":
-                                     person.setHaircolor(Color.BLUE);
+                                     person.setHaircolor(Colors.BLUE);
                                      break;
                                  case "ORANGE":
-                                     person.setHaircolor(Color.ORANGE);
+                                     person.setHaircolor(Colors.ORANGE);
                                      break;
                                  case "YELLOW":
-                                     person.setHaircolor(Color.YELLOW);
+                                     person.setHaircolor(Colors.YELLOW);
                                      break;
                                  default:
                                      throw new IncorrectVariableException();

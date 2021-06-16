@@ -1,5 +1,6 @@
 package Server.commands;
 
+import Client.util.User;
 import Common.data.Worker;
 import Common.exceptions.IncorrectArgumentException;
 import Server.utilitka.CollectionManager;
@@ -24,10 +25,10 @@ public class ExitCommand extends AbstractCommand {
      * @return состояние выполнения команды
      */
     @Override
-    public boolean execute(String argument, Worker worker){
+    public boolean execute(String argument, Worker worker, User user){
         try{
             if(!argument.isEmpty()) throw new IncorrectArgumentException();
-            collectionManager.saveCollection();
+           // collectionManager.saveCollection();
             return true;
         }catch (IncorrectArgumentException exception){
             StringResponse.appendError("Команда "+getName() + " не имеет параметров" );
