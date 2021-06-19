@@ -39,17 +39,16 @@ public class DataBaseHandler {
 
 
     public void connectWithDataBase(){
-        Scanner scanner=new Scanner(System.in);
-       // Console console = System.console();
+        Scanner scanner=new Scanner(System.in);;
         System.out.println("Подключение к базе данных");
         while(true) {
             System.out.println("Введите логин:");
             this.login=scanner.nextLine().trim();
             System.out.println("Введите пароль:");
-           // this.password=String.valueOf(console.readPassword());
+            this.password=scanner.nextLine().trim();
             try { ;
                 Class.forName("org.postgresql.Driver");
-                connection= DriverManager.getConnection(url,login,"sad876");
+                connection= DriverManager.getConnection(url,login,password);
                 System.out.println("Соединение установлено");
                 break;
             } catch (ClassNotFoundException exception) {

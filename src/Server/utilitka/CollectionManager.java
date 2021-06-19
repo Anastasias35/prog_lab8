@@ -173,7 +173,7 @@ public class CollectionManager{
     public void sortSalary(){
           workerCollection.stream()
                   .sorted(new SortBySalary())
-                  .forEach(x->StringResponse.appendln(x));
+                  .forEach(x->StringResponse.appendln(x.getSalary()));
 
     }
 

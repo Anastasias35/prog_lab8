@@ -73,54 +73,61 @@ public class AddWindow extends JPanel {
                 try{
                     if (name.getText().isEmpty()) throw new NullPointerException();
                 }catch(NullPointerException exception){
-                    stringBuilder.append("Имя не может быть пустым");
+                    stringBuilder.append("Имя не может быть пустым \n");
                 }
                 int x1=0;
                 try{
                     x1=Integer.parseInt(x.getText());
                 }catch(NumberFormatException exception){
-                    stringBuilder.append("'x' должен быть целым числом");
+                    stringBuilder.append("'x' должен быть целым числом \n");
                 }
                 double y1=0;
                 try{
                     y1=Double.parseDouble(y.getText());
                     if (y1<-256) throw new IncorrectVariableException();
                 } catch (IncorrectVariableException exception) {
-                    stringBuilder.append("'y' должно быть больше -256");
+                    stringBuilder.append("'y' должно быть больше -256 \n");
                 } catch(NumberFormatException exception){
-                    stringBuilder.append("'y' должно быть числом");
+                    stringBuilder.append("'y' должно быть числом \n");
                 }
                 LocalDateTime startDate1=null;
                 try{
                     startDate1=LocalDateTime.parse(startDate.getText() +"T00:00:00");
                 }catch (DateTimeParseException exception){
-                    stringBuilder.append("неправильный формат даты начала работы");
+                    stringBuilder.append("неправильный формат даты начала работы \n");
                 }
                 LocalDateTime endDate1=null;
                 try{
                     endDate1=LocalDateTime.parse(endDate.getText()+"T00:00:00");
                 }catch (DateTimeParseException exception){
-                    stringBuilder.append("неправильный формат даты окончания работы");
+                    stringBuilder.append("неправильный формат даты окончания работы \n");
                 }
                 Long salary1=null;
                 try{
                     salary1=Long.parseLong(salary.getText());
                     if (salary1<0) throw new IncorrectVariableException();
                 }catch (NumberFormatException exception){
-                    stringBuilder.append("зарплата должна быть целым числом");
+                    stringBuilder.append("зарплата должна быть целым числом \n");
                 }catch (NullPointerException exception){
                 } catch (IncorrectVariableException exception) {
-                    stringBuilder.append("зарплата должна быть больше 0");
+                    stringBuilder.append("зарплата должна быть больше 0 \n");
                 }
                 Double weight1=null;
                 try{
                     weight1=Double.parseDouble(weight.getText());
                 }catch (NumberFormatException exception){
-                    stringBuilder.append("вес должен быть числом");
+                    stringBuilder.append("вес должен быть числом \n");
                 }
 
                 if(stringBuilder.equals("")) {
                     try {
+                        coordinatesx.setText("");
+                        name.setText("");
+                        coordinatesy.setText("");
+                        salary.setText("");
+                        weight.setText("");
+                        startDate.setText("");
+                        endDate.setText("");
                         Coordinates coordinates = new Coordinates(x1, y1);
                         Instant instant = Instant.now();
                         Person person = new Person(weight1, Colors.valueOf((eyeColor.getItemAt(eyeColor.getSelectedIndex())).toString()), Colors.valueOf((hairColor.getItemAt(hairColor.getSelectedIndex())).toString()), Country.valueOf(nationality.getItemAt(nationality.getSelectedIndex()).toString()));
